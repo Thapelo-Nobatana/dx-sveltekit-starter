@@ -7,12 +7,15 @@ import { addDays, addMinutes } from "date-fns";
 import { getGuid } from "$lib/server/helpers";
 import argon2 from "argon2";
 import { deleteAllExpiredUserSessions } from "$lib/server/auth";
-import { DEFAULT_ROUTE } from "$constants/constants";
 import { env } from "$env/dynamic/private";
+import { UserRoleManager } from "$lib/server/userRoleModel";
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ cookies, locals }) => {
-    if (cookies.get("sessionId") && locals.user) redirect(303, DEFAULT_ROUTE);
+    if (cookies.get("sessionId") && locals.user) {
+        const userRoleModel = UserRoleManager.getBaseOnRole(locals.user?.user_role?.role_name)
+        redirect(303, userRoleModel.getDefaultRoute());
+    }
 
     const returnData = {
         loginForm: await superValidate(zod(loginSchema))
@@ -77,7 +80,7 @@ export const actions = {
 
         // Clear up expired tokens from DB
         await deleteAllExpiredUserSessions();
-
-        redirect(300, DEFAULT_ROUTE);
+        const userRoleManager = await UserRoleManager.getBasedOnId(existingUser.user_role_id);
+        redirect(300, userRoleManager.getDefaultRoute());
     }
 };
