@@ -21,7 +21,6 @@ export const getPrismaSelectAllFromEntity = (entityName, select = {}, baseEntity
     // Nested add all relationships
 
     for (const [relatedEntity, relationshipNames] of Object.entries(dataModel[entityName].relationships)) {
-        console.log(relatedEntity, baseEntityName);
         if (relatedEntity === baseEntityName) continue;
         select[getSqlFromCamelCase(relatedEntity)] = { select: {} };
 
@@ -190,11 +189,7 @@ const convertFilterClauseToPrismaClause = (filterConstraint = {}, prismaFilterCo
 
         const depth = getObjectDepth(filterConstraint[entityName]);
         if (depth > 1) {
-            console.log("DEPTH BIG");
-            console.log("baseEntityName", baseEntityName);
-            console.log("entityName", entityName);
             // Nested relationship
-
             if (entityName !== baseEntityName) {
                 prismaFilterConditions[entityName] = {};
                 convertFilterClauseToPrismaClause(
@@ -204,8 +199,6 @@ const convertFilterClauseToPrismaClause = (filterConstraint = {}, prismaFilterCo
                     getCamelFromSqlCase(entityName)
                 );
             } else {
-                console.log("1");
-
                 convertFilterClauseToPrismaClause(
                     filterConstraint[entityName],
                     prismaFilterConditions,
