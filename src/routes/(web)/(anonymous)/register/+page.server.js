@@ -65,7 +65,7 @@ export const actions = {
             expires: newSession.expires_at
         });
 
-        const userRoleManager = await UserRoleManager.getBasedOnId(newUser.user_role_id);
+        const userRoleManager = await UserRoleManager.getBasedOnId(defaultRole.role_name);
         redirect(300, userRoleManager.getDefaultRoute());
     }
 };
