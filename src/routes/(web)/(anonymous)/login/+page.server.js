@@ -13,7 +13,7 @@ import { UserRoleManager } from "$lib/server/userRoleModel";
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ cookies, locals }) => {
     if (cookies.get("sessionId") && locals.user) {
-        const userRoleModel = UserRoleManager.getBaseOnRole(locals.user?.user_role?.role_name)
+        const userRoleModel = UserRoleManager.getBaseOnRole(locals.user?.user_role?.role_name);
         redirect(303, userRoleModel.getDefaultRoute());
     }
 
@@ -45,7 +45,10 @@ export const actions = {
 
         if (!form.valid) return fail(400, { form });
 
-        const existingUser = await prisma.user_account.findFirst({ where: { username: form.data.email_address } });
+        const existingUser = await prisma.user_account.findFirst({
+            where: { username: form.data.email_address },
+            include: { user_role: true }
+        });
         if (!existingUser) return message(form, "Invalid credentials. Please try again");
 
         let isVerified = false;
@@ -80,7 +83,7 @@ export const actions = {
 
         // Clear up expired tokens from DB
         await deleteAllExpiredUserSessions();
-        const userRoleManager = await UserRoleManager.getBasedOnId(existingUser.user_role_id);
+        const userRoleManager = await UserRoleManager.getBaseOnRole(existingUser.user_role.role_name);
         redirect(300, userRoleManager.getDefaultRoute());
     }
 };

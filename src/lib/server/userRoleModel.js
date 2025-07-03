@@ -27,6 +27,10 @@ class UserRoleModelBase {
     }
 }
 
-class AdminModel extends UserRoleModelBase {}
+class AdminModel extends UserRoleModelBase {
+    getDefaultRoute() {
+        return "/admin/user-account";
+    }
+}
 
 class UserModel extends UserRoleModelBase {}
