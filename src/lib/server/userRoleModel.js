@@ -1,7 +1,12 @@
 import { prisma } from "./prisma-instance";
 
 export class UserRoleManager {
+    
     static getBaseOnRole(role) {
+        console.log(`Role: ${role}`);
+        if(!role) {
+            return new UserModel();
+        }
         switch (role.toLowerCase()) {
             case "admin":
                 return new AdminModel();

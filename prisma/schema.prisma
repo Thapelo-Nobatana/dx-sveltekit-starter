@@ -8,43 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user_account {
-  id                Int                 @id @default(autoincrement())
-  last_name         String?             @db.VarChar(150)
-  username          String              @unique(map: "userAccountUsername") @db.VarChar(250)
-  first_name        String?             @db.VarChar(100)
-  email_address     String              @db.VarChar(250)
-  hashed_password   String?             @db.VarChar(100)
-  last_updated      DateTime            @default(now()) @db.DateTime(0)
-  user_role_id      Int?
-  push_subscription push_subscription[]
-  user_role         user_role?          @relation(fields: [user_role_id], references: [id], map: "423b4e4321253537640cf95f33c36b61")
-  user_session      user_session[]
-
-  @@index([user_role_id], map: "061ef044873abcf5ce235d2ea7c07399")
-}
-
-model user_role {
-  id           Int            @id @default(autoincrement())
-  role_name    String         @db.VarChar(100)
-  last_updated DateTime       @default(now()) @db.DateTime(0)
-  user_account user_account[]
-}
-
-model user_session {
-  id                  Int           @id @default(autoincrement())
-  session_id          String        @unique(map: "userSessionSessionid") @db.VarChar(50)
-  user_agent          String?       @db.VarChar(200)
-  session_data        Json
-  expires_at          DateTime      @db.DateTime(0)
-  duration_in_minutes Int
-  last_updated        DateTime      @default(now()) @db.DateTime(0)
-  user_account_id     Int?
-  user_account        user_account? @relation(fields: [user_account_id], references: [id], map: "c914b3bbb55c0ee0bae6d8a43468b571")
-
-  @@index([user_account_id], map: "a6d3b1ba7c64d9f2c316489532292daf")
-}
-
 model file {
   id                          Int     @id @default(autoincrement())
   category                    String  @db.VarChar(300)
@@ -72,6 +35,18 @@ model one_time_token {
   last_updated            DateTime @default(now()) @db.DateTime(0)
 }
 
+model post {
+  id              Int           @id @default(autoincrement())
+  content         String?       @db.VarChar(250)
+  last_updated    DateTime      @default(now()) @db.DateTime(0)
+  deleted         Boolean
+  user_account_id Int?
+  created_at      DateTime?     @db.DateTime(0)
+  user_account    user_account? @relation(fields: [user_account_id], references: [id], map: "3035ce41933089a4fd38eb05466a5cc8")
+
+  @@index([user_account_id], map: "3035ce41933089a4fd38eb05466a5cc8")
+}
+
 model push_subscription {
   id                        Int           @id @default(autoincrement())
   is_active                 Boolean       @default(true)
@@ -80,7 +55,45 @@ model push_subscription {
   push_subscription_details Json?
   last_updated              DateTime      @default(now()) @db.DateTime(0)
   user_account_id           Int?
-  user_account              user_account? @relation(fields: [user_account_id], references: [id], map: "c6cd234e927bdc157034c0b7287faf2b")
+  user_account              user_account? @relation(fields: [user_account_id], references: [id], map: "584cdf1344f50fc9a58d2f472f24e620")
 
-  @@index([user_account_id], map: "c6cd234e927bdc157034c0b7287faf2b")
+  @@index([user_account_id], map: "584cdf1344f50fc9a58d2f472f24e620")
+}
+
+model user_account {
+  id                Int                 @id @default(autoincrement())
+  last_name         String?             @db.VarChar(150)
+  username          String              @unique(map: "userAccountUsername") @db.VarChar(250)
+  first_name        String?             @db.VarChar(100)
+  email_address     String              @db.VarChar(250)
+  hashed_password   String?             @db.VarChar(100)
+  last_updated      DateTime            @default(now()) @db.DateTime(0)
+  user_role_id      Int?
+  post              post[]
+  push_subscription push_subscription[]
+  user_role         user_role?          @relation(fields: [user_role_id], references: [id], map: "8f503d9095308e664b74afdaa2080332")
+  user_session      user_session[]
+
+  @@index([user_role_id], map: "8f503d9095308e664b74afdaa2080332")
+}
+
+model user_role {
+  id           Int            @id @default(autoincrement())
+  role_name    String         @db.VarChar(100)
+  last_updated DateTime       @default(now()) @db.DateTime(0)
+  user_account user_account[]
+}
+
+model user_session {
+  id                  Int           @id @default(autoincrement())
+  session_id          String        @unique(map: "userSessionSessionid") @db.VarChar(50)
+  user_agent          String?       @db.VarChar(200)
+  session_data        Json
+  expires_at          DateTime?     @db.DateTime(0)
+  duration_in_minutes Int
+  last_updated        DateTime      @default(now()) @db.DateTime(0)
+  user_account_id     Int?
+  user_account        user_account? @relation(fields: [user_account_id], references: [id], map: "87ca17aa6866f44733c802cbe64c1802")
+
+  @@index([user_account_id], map: "87ca17aa6866f44733c802cbe64c1802")
 }

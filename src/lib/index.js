@@ -133,11 +133,12 @@ export const superFormOnResult = ({ result, formElement, cancel }) => {
 /**
  * @param {{action: URL, formData: FormData,formElement: HTMLFormElement, controller: AbortController, submitter: HTMLElement| null, cancel(): void}} event
  */
-export const superFormOnSubmit = ({ action, formData, formElement, controller, submitter, cancel, jsonData }) => {
+export const superFormOnSubmit = ({ action, formData, formElement, controller, submitter, cancel,}) => {
     console.log("action", action);
     console.log("result", formData);
     console.log("formElement", formElement);
     console.log("controller", controller);
     console.log("submitter", submitter);
     console.log("cancel", cancel);
+
 };

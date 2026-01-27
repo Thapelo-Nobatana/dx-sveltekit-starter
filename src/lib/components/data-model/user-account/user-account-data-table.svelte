@@ -35,6 +35,7 @@
     buildAttributeMap("userAccount", dataTableConfig, attributeMap);
 
     let flatRows = [];
+    
     $: (() => {
         flatRows = [];
         for (const nestedRow of data.userAccountArray) {

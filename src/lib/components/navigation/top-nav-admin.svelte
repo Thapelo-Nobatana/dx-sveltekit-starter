@@ -46,6 +46,8 @@
             on:click={() => {
                 doLogout();
             }}><Power /></Button>
+        <Button variant="link" on:click={() => goto("/dashboard")}>Deshboard
+        </Button>
     </div>
     <div class="flex items-center justify-start sm:hidden">
         <DropdownMenu.Root>

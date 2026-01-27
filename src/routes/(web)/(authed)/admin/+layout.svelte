@@ -4,7 +4,9 @@
 
     const items = [
         { path: "/admin/user-account", displayLabel: "User Accounts" },
-        { path: "/admin/user-role", displayLabel: "User Roles" }
+        { path: "/admin/user-role", displayLabel: "User Roles" },
+        { path: "/admin/user-post", displayLabel: "User Posts" }
+
     ];
 </script>
 
