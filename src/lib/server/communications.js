@@ -1,18 +1,25 @@
 import { env } from "$env/dynamic/private";
 import { env as publicEnv } from "$env/dynamic/public";
+// @ts-ignore
+import { cons } from "effect/List";
 import { createTransport } from "nodemailer";
 
 const transporter = createTransport({
-    host: env.SMTP_HOST,
-    port: env.SMTP_PORT,
+    service: env.SMTP_EMAIL_SERVICE,
     auth: {
         user: env.SMTP_EMAIL_ADDRESS,
-        pass: env.SMTP_EMAIL_PASSWORD
+        pass: "jjef kvlh glko gbts"
     }
 });
 
+console.log("env.SMTP_EMAIL_SERVICE:", env.SMTP_EMAIL_SERVICE);
+console.log("env.SMTP_EMAIL_ADDRESS:", env.SMTP_EMAIL_ADDRESS);
+console.log("env.SMTP_EMAIL_PASSWORD:", env.SMTP_EMAIL_PASSWORD);
+console.log("publicEnv.PUBLIC_BASE_URL:", env.SMTP_EMAIL_PASSWORD);
+
+// @ts-ignore
 export const sendPasswordResetEmail = async (userAccount, oneTimeTokenValue) => {
-    let formatted = `Hi ${userAccount.first_name}! <br><br>
+    let formatted = `Hi ${userAccount.first_name || "User"}! <br><br>
     A request to reset your password has been received.<br>
     If this was not you, you can safely ignore this email.<br><br><br>
     

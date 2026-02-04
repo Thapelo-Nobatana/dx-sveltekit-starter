@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { prisma } from "./prisma-instance";
 
 export class UserRoleManager {
@@ -34,7 +35,8 @@ class UserRoleModelBase {
 
 class AdminModel extends UserRoleModelBase {
     getDefaultRoute() {
-        return "/admin/user-account";
+        // return "/admin/user-account";
+        return "/dashboard";
     }
 }
 

@@ -25,7 +25,7 @@
 <div
     class="fixed top-0 z-50 flex h-[calc(env(safe-area-inset-top)+3rem)] w-full items-end justify-between bg-background-200 px-2 pb-1 pt-[env(safe-area-inset-top)] shadow-sm">
     <div class="flex items-center justify-start">
-        <a href="/dashboard"><AppIcon class="max-h-10" /></a>
+        <a href="/dashboard"><AppIcon class="max-h-10 rounded-full" /></a>
         {#if pageTitle.length > 0}
             <div class="mx-2 font-bold">{pageTitle}</div>
         {/if}
@@ -45,9 +45,10 @@
             variant="link"
             on:click={() => {
                 doLogout();
-            }}><Power /></Button>
-        <Button variant="link" on:click={() => goto("/dashboard")}>Deshboard
-        </Button>
+            }}><Power />
+            </Button>
+        <!-- <Button variant="link" on:click={() => goto("/dashboard")}>Deshboard
+        </Button> -->
     </div>
     <div class="flex items-center justify-start sm:hidden">
         <DropdownMenu.Root>

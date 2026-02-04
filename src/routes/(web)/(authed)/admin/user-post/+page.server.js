@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 import { prisma } from "$lib/server/prisma-instance";
 
@@ -5,7 +6,7 @@ import { prisma } from "$lib/server/prisma-instance";
 export const load = async ()  =>{
 
     const posts = await prisma.post.findMany({
-        where: { deleted: false },
+        where: { is_deleted: false },
         include: {
           user_account: {
             select: { username: true}
@@ -21,15 +22,17 @@ export const load = async ()  =>{
 }
 
 
-const  actions = {
+export const actions = {
 
     limitPosts:  async ({request }) => {
 
+        console.log("This is limit")
+
         const formData = await request.formData();
         const limit = Number (formData.get("limit"));
-
+           console.log("Limit is:", limit);
         const posts = await prisma.post.findMany({
-            where: { deleted: false },
+            where: { is_deleted: false },
             include: {
               user_account: {
                 select: { username: true }
@@ -39,7 +42,7 @@ const  actions = {
             take: limit
           });
 
-          return { posts };
+          return { posts, limit };
 
     },
 
@@ -50,7 +53,9 @@ const  actions = {
 
         await prisma.post.update({
             where: { id: postId },
-            data: { content: null,  deleted: true },
+            data: { content: null,  is_deleted: true },
         });
+
+        return { success: true };
     },
 }

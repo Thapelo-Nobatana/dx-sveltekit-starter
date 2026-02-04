@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
     import { enhance } from "$app/forms";
 
     import Button from "$components/shadcn/ui/button/button.svelte";
@@ -8,13 +10,15 @@
     import UserAccountDataTableCell from "./user-account-data-table-cell.svelte";
     import { env } from "$env/dynamic/public";
     import NotificationTest from "../_notification-test.svelte";
+    import Alert from "$lib/components/shadcn/ui/alert/alert.svelte";
+    import AlertDialog from "$lib/components/shadcn/ui/alert-dialog/_alert-dialog.svelte";
 
     export let flatRow;
 
     export let rowId;
     export let allowEdit = false;
     export let allowDelete = false;
-
+     let isDeleting = false;
     export let basePath;
 </script>
 
@@ -34,9 +38,11 @@
 
             <form action={`${basePath}/${rowId}?/delete`} use:enhance method="POST">
                 <input type="hidden" bind:value={rowId} />
-                <Button type="submit" class="border-none" variant="destructive-outline" size="inline-icon">
+                <Button type="button" on:click={() => isDeleting = !isDeleting} class="border-none" variant="destructive-outline" size="inline-icon">
                     <X class="h-4 w-4" />
                 </Button>
+                <!-- <AlertDialog bind:open{isDeleting} formToSubmit={rowId}  title="Are you sure?" description="This will permanently delete this user account." /> -->
+
             </form>
         </td>
     {/if}

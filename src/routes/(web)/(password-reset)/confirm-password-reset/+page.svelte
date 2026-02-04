@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
     import { buttonVariants } from "$lib/components/shadcn/ui/button";
     import * as Form from "$lib/components/shadcn/ui/form";
     import { Input } from "$lib/components/shadcn/ui/input";
@@ -12,11 +14,14 @@
     import AppLogo from "$lib/components/app-images/app-logo.svelte";
 
     import * as Card from "$lib/components/shadcn/ui/card";
-    import { PUBLIC_APP_DISPLAY_NAME } from "$env/static/public";
+    // import { PUBLIC_APP_DISPLAY_NAME } from "$env/static/public";
     import { toast } from "svelte-sonner";
 
     /** @type {import('./$types').PageData} */
     export let data;
+
+    let isShow = false;
+    let isConfirmed = false;
 
     const form = superForm(data.form, {
         validators: zodClient(confirmPasswordResetSchema),
@@ -45,6 +50,7 @@
             <AppLogo class="w-56 self-center py-6" />
             {#if !data?.error}
                 <Card.Title class="px-4">Confirm your new password</Card.Title>
+
             {/if}
         </Card.Header>
         <Card.Content class="flex w-80 flex-col mt-5">
@@ -71,9 +77,13 @@
                                     <input type="hidden" name="token_value" bind:value={$formData.token_value} />
                                     <Form.Field {form} name="password">
                                         <Form.Control let:attrs>
-                                            <Form.Label>Password</Form.Label>
-                                            <Input {...attrs} type="password" bind:value={$formData.password} />
-                                            <Form.FieldErrors class="relative" />
+                                                   <Form.Label>Password</Form.Label>
+                                                 <Input {...attrs}  type={ isShow ? "text": "password"} bind:value={$formData.password} />
+
+                                                         <button type="button"  class="ml-[-70px] w-half  p-2 cursor-pointer" on:click={() => isShow = !isShow}>
+                                                            <p class="text-white">{isShow ? "Hide" : "Show"}</p>
+                                                        </button>
+                                                 <Form.FieldErrors class="relative" />
                                         </Form.Control>
                                     </Form.Field>
                                     <Form.Field {form} name="confirm_password">
@@ -102,7 +112,13 @@
                     <Form.Field {form} name="password">
                         <Form.Control let:attrs>
                             <Form.Label>Password</Form.Label>
-                            <Input {...attrs} type="password" bind:value={$formData.password} />
+                            <div class="flex items-center">
+                                 <Input {...attrs} type={isShow ? "text" : "password"} bind:value={$formData.password} />
+                                <button type="button"  class="ml-[-70px] w-half  p-2 cursor-pointer" on:click={() => isShow = !isShow}>
+                                    <p>{isShow ? "Hide" : "Show"}</p>
+                                </button>
+                            </div>
+
                             <Form.FieldErrors class="relative" />
                         </Form.Control>
                     </Form.Field>
@@ -110,7 +126,12 @@
                         <Form.Control let:attrs>
                             <Form.Label>Confirm Password</Form.Label>
                             <Form.FieldErrors />
-                            <Input {...attrs} type="password" bind:value={$formData.confirm_password} />
+                            <div class="flex items-center">
+                                        <Input {...attrs} type={isConfirmed ? "text" : "password"} bind:value={$formData.confirm_password} />
+                                <button type="button"  class="ml-[-70px] w-half  p-2 cursor-pointer" on:click={() => isConfirmed = !isConfirmed}>
+                                    <p>{isConfirmed ? "Hide" : "Show"}</p>
+                                </button>
+                            </div>
                         </Form.Control>
                     </Form.Field>
 

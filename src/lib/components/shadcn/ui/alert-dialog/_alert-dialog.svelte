@@ -3,19 +3,22 @@
     import { createEventDispatcher } from "svelte";
     import { buttonVariants } from "../button";
 
+
     export let open = false;
     export let title;
     export let description;
-
+  
     export let showCancelButton = true;
     export let showActionButton = true;
-
+    
     export let formToSubmit;
+
+     console.log("formToSubmit:", formToSubmit);
     const dispatch = createEventDispatcher();
 </script>
 
 <AlertDialog.Root bind:open closeOnOutsideClick={true}>
-    <AlertDialog.Content class="">
+    <AlertDialog.Content class="" >
         <AlertDialog.Header>
             <AlertDialog.Title>{title}</AlertDialog.Title>
             <AlertDialog.Description>
@@ -36,10 +39,12 @@
                 <AlertDialog.Action
                     class={buttonVariants({ variant: "destructive" })}
                     on:click={() => {
+                        console.log("Submitting form:", formToSubmit);
                         dispatch("action");
                         formToSubmit?.requestSubmit();
                     }}>Delete</AlertDialog.Action>
             {/if}
+
         </AlertDialog.Footer>
     </AlertDialog.Content>
 </AlertDialog.Root>

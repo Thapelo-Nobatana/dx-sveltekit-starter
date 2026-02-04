@@ -24,11 +24,14 @@ export const actions = {
         try {
             const userAccount = await prisma.user_account.findUnique({ where: { username: form.data.email_address } });
             if (!userAccount) return message(form, "No user account found");
-
+                 console.log("User account found:", userAccount);
             // DX-NOTE: Clean up of ANY expired tokens in system
             await prisma.one_time_token.deleteMany({
                 where: { expires_at: { lt: new Date() } }
             });
+
+
+            
 
             const token_value = getGuid();
 

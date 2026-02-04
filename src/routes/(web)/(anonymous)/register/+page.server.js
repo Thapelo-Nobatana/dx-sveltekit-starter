@@ -15,7 +15,7 @@ import { UserRoleManager } from "$lib/server/userRoleModel.js";
 export const load = async ({ cookies, locals }) => {
     if (cookies.get("sessionId") && locals.user) {
         const userRoleModel = UserRoleManager.getBaseOnRole(locals.user?.user_role?.role_name)
-        redirect(303, userRoleModel.getDefaultRoute());
+       throw redirect(303, userRoleModel.getDefaultRoute());
     }
     return {
         registerForm: await superValidate(zod(registerSchema))
@@ -35,6 +35,7 @@ export const actions = {
         if (existingUser) return setError(form, "email_address", "E-mail already exists");
 
         const userData = {
+            user_role_id: null,
             email_address: form.data.email_address,
             username: form.data.email_address,
             hashed_password: await argon2.hash(form.data.password)
@@ -65,7 +66,7 @@ export const actions = {
             expires: newSession.expires_at
         });
 
-        const userRoleManager = await UserRoleManager.getBasedOnId(defaultRole.role_name);
-        redirect(300, userRoleManager.getDefaultRoute());
+        const userRoleManager = await UserRoleManager.getBasedOnId(defaultRole.id);
+         throw redirect(300, userRoleManager.getDefaultRoute());
     }
 };

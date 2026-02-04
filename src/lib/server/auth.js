@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { error } from "@sveltejs/kit";
 import { prisma } from "./prisma-instance";
 import { addMinutes, isBefore } from "date-fns";

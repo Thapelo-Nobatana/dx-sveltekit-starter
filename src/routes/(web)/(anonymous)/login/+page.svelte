@@ -16,6 +16,7 @@
     import ExternalLink from "lucide-svelte/icons/external-link";
 
     export let data;
+    let isShow = false;
 
     onMount(() => {
         handleRedirectNotification();
@@ -37,7 +38,7 @@
 <div class="flex h-full w-full flex-col items-center justify-center">
     <Card.Root class="w-fit bg-card shadow-2xl">
         <Card.Header class="mb-2 p-0 text-center">
-            <AppLogo class="w-56 self-center py-8" />
+            <AppLogo class="w-56 self-center py-8 rounded-full" />
             <Card.Title>Sign in</Card.Title>
         </Card.Header>
         <Card.Content class="flex flex-col">
@@ -52,7 +53,12 @@
                 <Form.Field {form} name="password">
                     <Form.Control let:attrs>
                         <Form.Label>Password</Form.Label>
-                        <Input type="password" {...attrs} bind:value={$formData.password} />
+                        <div class="flex items-center">
+                               <Input type={isShow ? "text" : "password"} {...attrs} bind:value={$formData.password} />
+                                <button type="button"  class="ml-[-70px] w-half  p-2 cursor-pointer" on:click={() => isShow = !isShow}>
+                                    <p>{isShow ? "Hide" : "Show"}</p>
+                                </button>
+                        </div>
                     </Form.Control>
 
                     <Form.FieldErrors />
@@ -79,8 +85,9 @@
             </form>
         </Card.Content>
     </Card.Root>
-    <div class="mt-10">
+    <!-- <div class="mt-10">
         <a class="underline" target="_blank" href="/theme-demo"
             >Theme setup <ExternalLink class="mx-0 -mt-1 inline-flex h-4 w-4"></ExternalLink></a>
-    </div>
+    </div> -->
 </div>
+

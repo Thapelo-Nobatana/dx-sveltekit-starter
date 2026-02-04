@@ -29,11 +29,11 @@
 </script>
 
 <div class="flex h-full w-full flex-col items-center justify-center">
-    <Card.Root class="w-80 bg-card shadow-2xl">
+    <Card.Root class="w-80  bg-card shadow-2xl">
         <Card.Header class="mb-2 p-0 text-center">
             <AppLogo class="w-56 self-center py-6" />
             <Card.Title class="px-4 mt-0">
-                Reset your {env.PUBLIC_APP_DISPLAY_NAME} password
+                Reset your {env.PUBLIC_APP_DISPLAY_NAME || "Divblox"} password
             </Card.Title>
             {#if $page.url.searchParams.get("submitted")}
                 <Card.Description class="p-4">

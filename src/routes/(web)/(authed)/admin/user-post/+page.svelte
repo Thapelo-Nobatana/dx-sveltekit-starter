@@ -1,8 +1,9 @@
 <script>
+// @ts-nocheck
+
     import { enhance } from "$app/forms";
  import * as Card from "$lib/components/shadcn/ui/card";
-    import { cons } from "effect/List";
-    import { Root } from "postcss";
+ import AlertDialog from "$lib/components/shadcn/ui/alert-dialog/_alert-dialog.svelte";
 import swal from "sweetalert2";
 
     export let data;
@@ -11,21 +12,39 @@ import swal from "sweetalert2";
 
      let limit = 5;
 
-
-    async function loadMorePosts() {
-         limit += 5;
-
-         const formData = new FormData();
-         formData.append("limit", limit.toString());
-
-         const  res = await fetch("?/limitPosts", {
-                method: "POST",
-                body: formData
-         });
-
-         const result = await res.json();
-         posts = result.posts;
+  function limitEnhance({ result, type } = {}) {
+         console.log("This is limitEnhance");
+    if (type === "success") {
+      posts = result.data.posts;
+      limit = result.data.limit;
+      console.log("Posts loaded:", posts);
     }
+  }
+
+//     let isDeleting = false;
+    
+//  let deleteFormEl = data.posts;
+//     let deletForm;
+//      deleteFormEl.map((post) => {
+//         deletForm = post.id;
+
+//         confirmUserRole = post.user_account?.user_role?.role_name;
+//     });
+
+    // async function loadMorePosts() {
+    //      limit += 5;
+
+    //      const formData = new FormData();
+    //      formData.append("limit", limit.toString());
+
+    //      const  res = await fetch("?/limitPosts", {
+    //             method: "POST",
+    //             body: formData
+    //      });
+
+    //      const result = await res.json();
+    //      posts = result.posts;
+    // }
     async function  deletePost(post) {
 
              const result = await swal.fire({
@@ -56,16 +75,16 @@ import swal from "sweetalert2";
 </script>
 
 <div class=" flex flex-col w-full items-center">
-    <h1 class="flex text-2xl font-bold   mb-4">User Posts Management</h1>
+    <h1 class="flex text-2xl font-bold   mb-4"> Posts Management</h1>
 
     <div class="flex flex-col items-center w-full @container">
 
-        {#if data.posts === undefined || null}
+        {#if posts === undefined || null}
             <p>No posts found.</p>
             {:else}
-             <div class="w-full flex flex-col items-center">
+             <div class="w-full flex flex-col p-4 items-center">
 
-               {#each data.posts as post}
+               {#each posts as post}
                     <Card.Root class="mb-4 w-full max-w-2xl">
                         <Card.Header>
                             <div class="flex justify-between items-center">
@@ -81,20 +100,29 @@ import swal from "sweetalert2";
                         </Card.Content>
                     </Card.Root>
                 {/each}
-                <!-- 
-            <form method="POST" action={'?/deletePost'} bind:this={deletForm}  use:enhance>
+                
+            <!-- <form method="POST" action={'?/deletePost'} bind:this={deletForm}  use:enhance>
                 <input type="hidden" name="postId" value={post.id} />
                 <button on:click={() => ( isDeleting = !isDeleting )}>Delete</button>
                 <AlertDialog bind:open={isDeleting}  formToSubmit={deletForm} title="Are you sure?" description="This will permanently delete this post." />
             </form> -->
 
                  <div class="mt-4 mb-4 border-b w-full flex justify-center">
-                    <form method="POST" action={'?/limitPosts'}  use:enhance>
-                        <input type="hidden" name="limit" value={limit} />
-                    <button on:click={ async () => {
-                        await loadMorePosts();
-                     }}  class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer">Load More</button>
-                    </form>
+                            <form
+                                    method="POST"
+                                    action="?/limitPosts"
+                                    use:enhance={limitEnhance}
+                                    class="mt-4 flex justify-center"
+                                >
+                                    <input type="hidden" name="limit" value={limit + 1} />
+
+                                    <button
+                                    type="submit"
+                                    class="bg-gray-600 hover:bg-gray-800 text-white px-4 py-2 rounded"
+                                    >
+                                    Load More
+                                    </button>
+                                </form>
                   </div>
              </div>
         {/if}

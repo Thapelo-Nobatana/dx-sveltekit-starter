@@ -39,9 +39,9 @@ model post {
   id              Int           @id @default(autoincrement())
   content         String?       @db.VarChar(250)
   last_updated    DateTime      @default(now()) @db.DateTime(0)
-  deleted         Boolean
   user_account_id Int?
   created_at      DateTime?     @db.DateTime(0)
+  is_deleted      Boolean       @default(false)
   user_account    user_account? @relation(fields: [user_account_id], references: [id], map: "3035ce41933089a4fd38eb05466a5cc8")
 
   @@index([user_account_id], map: "3035ce41933089a4fd38eb05466a5cc8")

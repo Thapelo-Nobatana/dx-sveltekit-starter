@@ -358,11 +358,11 @@
 				"lengthOrValues": null,
 				"displayType": "DATETIME"
 			},
-			"deleted": {
+			"isDeleted": {
 				"type": "TINYINT",
 				"allowNull": false,
 				"lengthOrValues": "1",
-				"default": null,
+				"default": "0",
 				"displayType": "TINYINT (1)"
 			}
 		},

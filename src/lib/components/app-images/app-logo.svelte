@@ -1,6 +1,6 @@
 <script>
-    import AppLogoLightMode from "$lib/assets/images/app-logo.light.png";
-    import AppLogoDarkMode from "$lib/assets/images/app-logo.dark.png";
+    import AppLogoLightMode from "$lib/assets/images/app-logo.jpeg";
+    import AppLogoDarkMode from "$lib/assets/images/app-logo.jpeg";
     import { mode } from "mode-watcher";
     import { env } from "$env/dynamic/public";
 </script>
